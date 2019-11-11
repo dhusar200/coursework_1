@@ -23,6 +23,12 @@ public class Dec2HexTest {
     }
 
     @Test
+    public void numerousInputs(){
+        String[] array = {"-200", "100", "Test", ""};
+        tester.main(array);
+    }
+
+    @Test
     public void emptyinput(){
         String[] array = new String[]{""};
         tester.main(array);
