@@ -1,0 +1,61 @@
+<project name="UTest" default="junitreport" basedir=".">
+
+    <target name="delete">
+        <delete dir="test-output"/>
+        <delete dir="src"/>
+        <delete dir="bin"/>
+        <delete dir="lib"/>
+    </target>
+    <target name="create" depends="delete">
+        <mkdir dir="test-output"/>
+        <mkdir dir="src"/>
+        <mkdir dir="bin"/>
+        <mkdir dir="lib"/>
+    </target>
+
+    <path id="classpath">
+        <pathelement location="lib/hamcrest-core-1.3.jar" />
+        <pathelement location="lib/junit-4.12.jar" />
+        <pathelement location="bin"/>
+    </path>
+
+    <target name="copy" depends="create">
+        <copy todir="lib" overwrite="true">
+            <fileset dir="..\lib" includes="**/*.jar">
+            </fileset>
+        </copy>
+        <copy todir="src" overwrite="true">
+            <fileset dir="..\" includes="**/*.java">
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="compile" depends="copy">
+        <javac classpathref="classpath" srcdir="src" includeantruntime="true" destdir="bin"/>
+    </target>
+
+    <target name="run" depends="compile">
+        <java classpath="bin" classname="Dec2Hex" fork="true" args="100"/>
+    </target>
+
+    <target name="junit" depends="run">
+        <junit printsummary="yes">
+            <classpath>
+                <path refid="classpath"/>
+            </classpath>
+
+            <formatter type="xml"/>
+
+            <batchtest fork="true" todir="test-output">
+                <fileset dir="src" includes="**/*Test.java"/>
+            </batchtest>
+        </junit>
+    </target>
+
+    <target name="junitreport" depends="junit">
+        <junitreport todir="test-output">
+            <fileset dir="test-output" includes="TEST-*.xml"/>
+            <report todir="test-output"/>
+        </junitreport>
+    </target>
+</project>

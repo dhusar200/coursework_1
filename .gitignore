@@ -1,3 +1,9 @@
 *.class
 *.iml
 .idea
+bin
+dist
+.jar
+src
+test-output
+ant/lib
